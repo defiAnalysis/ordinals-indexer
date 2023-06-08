@@ -405,11 +405,13 @@ func (s *Syncer) parseInscriptions(inscriptionURL string) (string, error) {
 	if inscriptionURL == "" {
 		return "", nil
 	}
-	s.logger.Debugf("fetching %s", inscriptionURL)
+	s.logger.Infof("fetching %s", inscriptionURL)
 	resp, err := httpGet(inscriptionURL)
 	if err != nil {
 		return "", err
 	}
+
+	s.logger.Infof("resp %s", resp)
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
