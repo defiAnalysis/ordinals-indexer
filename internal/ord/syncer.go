@@ -411,7 +411,8 @@ func (s *Syncer) parseInscriptions(inscriptionURL string) (string, error) {
 		return "", err
 	}
 
-	s.logger.Infof("resp %s", resp)
+	s.logger.Infof("resp %v", resp)
+	s.logger.Infof("resp  Body %v", resp.Body)
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
