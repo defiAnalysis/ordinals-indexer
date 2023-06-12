@@ -15,7 +15,7 @@ data:
     write_timeout: 0.2s
 ord:
   server:
-    addr: http://127.0.0.1:80
+    addr: https://ordinals.com/
     inscription_id_start: 0
     inscription_id_end:
   worker:
