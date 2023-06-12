@@ -76,15 +76,15 @@ func (w *Worker) parseInscriptionInfo(uid string) (map[string]interface{}, error
 	}
 
 	details := make(map[string]interface{})
-	inscriptionIDText := doc.Find("h1").First().Text()
-	w.logger.Infof("inscriptionIDText %s", inscriptionIDText)
-	inscriptionIDText = strings.Replace(inscriptionIDText, "Inscription ", "", -1)
-	// convert inscriptionID string to int64
-	inscriptionID, err := strconv.ParseInt(inscriptionIDText, 10, 64)
-	if err != nil {
-		return nil, fmt.Errorf("failed to convert inscriptionID %s to int64: %v", inscriptionIDText, err)
-	}
-	details["inscription_id"] = inscriptionID
+	//inscriptionIDText := doc.Find("h1").First().Text()
+	//w.logger.Infof("inscriptionIDText %s", inscriptionIDText)
+	//inscriptionIDText = strings.Replace(inscriptionIDText, "Inscription ", "", -1)
+	//// convert inscriptionID string to int64
+	//inscriptionID, err := strconv.ParseInt(inscriptionIDText, 10, 64)
+	//if err != nil {
+	//	return nil, fmt.Errorf("failed to convert inscriptionID %s to int64: %v", inscriptionIDText, err)
+	//}
+	//details["inscription_id"] = inscriptionID
 
 	dtElements := doc.Find("dl dt")
 	ddElements := doc.Find("dl dd")
@@ -97,6 +97,9 @@ func (w *Worker) parseInscriptionInfo(uid string) (map[string]interface{}, error
 		}
 		key = strings.Replace(strings.ToLower(key), " ", "_", -1)
 		switch key {
+		case "id":
+			details["inscription_id"] = value
+			w.logger.Infof("inscriptionIDText %s", value)
 		case "output_value":
 			v, _ := strconv.ParseUint(value, 10, 64)
 			details[key] = v
