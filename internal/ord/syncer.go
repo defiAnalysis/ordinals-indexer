@@ -413,7 +413,7 @@ func (s *Syncer) parseInscriptions(inscriptionURL string) (string, error) {
 
 	defer resp.Body.Close()
 
-	s.logger.Infof("body %v", resp.Body)
+	//s.logger.Infof("body %v", resp.Body)
 	//s.logger.Infof("resp  Body %v", resp.Body)
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
@@ -429,6 +429,8 @@ func (s *Syncer) parseInscriptions(inscriptionURL string) (string, error) {
 		if uid == "" {
 			return
 		}
+
+		s.logger.Infof("uid %s", uid)
 		// record the inscription uids, so that we can process them in order
 		insUids = append(insUids, uid)
 	})
