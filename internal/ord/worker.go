@@ -98,8 +98,7 @@ func (w *Worker) parseInscriptionInfo(uid string) (map[string]interface{}, error
 		key = strings.Replace(strings.ToLower(key), " ", "_", -1)
 		switch key {
 		case "id":
-			details["inscription_id"] = value
-			w.logger.Infof("inscriptionIDText %s", value)
+			details[key] = value
 		case "output_value":
 			v, _ := strconv.ParseUint(value, 10, 64)
 			details[key] = v
