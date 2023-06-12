@@ -148,8 +148,8 @@ func (s *Syncer) receveResult() {
 				resultCount = 0
 				resultsInOrder := make([]*result, len(insUids))
 				for i := 0; i < len(insUids); i++ {
-					s.logger.Infof("insUids[%d]: %s", i, insUids[i])
 					resultsInOrder[i] = results[insUids[len(insUids)-i-1]]
+					s.logger.Infof("insUids[%d]: %v", resultsInOrder[i])
 				}
 				if len(resultsInOrder) != len(insUids) {
 					err = fmt.Errorf("resultsInOrder length %d != insUids length %d", len(resultsInOrder), len(insUids))
@@ -157,6 +157,7 @@ func (s *Syncer) receveResult() {
 					// make sure to process results in ascending order of inscriptionId
 					lastId := int64(0)
 					for _, result := range resultsInOrder {
+						s.logger.Infof("inscriptionId: %d", result.inscriptionId)
 						if result.inscriptionId < lastId {
 							err = fmt.Errorf("results are not in order, lastId: %d, currentId: %d", lastId, result.inscriptionId)
 							break
