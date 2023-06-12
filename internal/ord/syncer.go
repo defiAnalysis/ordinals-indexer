@@ -406,15 +406,15 @@ func (s *Syncer) parseInscriptions(inscriptionURL string) (string, error) {
 		return "", nil
 	}
 	s.logger.Infof("fetching %s", inscriptionURL)
-	resp, err := httpGet(inscriptionURL)
+	body, err := HttpGet(inscriptionURL)
 	if err != nil {
 		return "", err
 	}
 
-	s.logger.Infof("resp %v", resp)
-	s.logger.Infof("resp  Body %v", resp.Body)
+	s.logger.Infof("body %v", body)
+	//s.logger.Infof("resp  Body %v", resp.Body)
 
-	doc, err := goquery.NewDocumentFromReader(resp.Body)
+	doc, err := goquery.NewDocumentFromReader(body)
 	if err != nil {
 		return "", err
 	}
