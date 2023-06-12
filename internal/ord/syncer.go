@@ -149,7 +149,7 @@ func (s *Syncer) receveResult() {
 				resultsInOrder := make([]*result, len(insUids))
 				for i := 0; i < len(insUids); i++ {
 					resultsInOrder[i] = results[insUids[len(insUids)-i-1]]
-					s.logger.Infof("insUids[%d]: %v", resultsInOrder[i])
+					s.logger.Infof("resultsInOrder: %v", resultsInOrder[i])
 				}
 				if len(resultsInOrder) != len(insUids) {
 					err = fmt.Errorf("resultsInOrder length %d != insUids length %d", len(resultsInOrder), len(insUids))
