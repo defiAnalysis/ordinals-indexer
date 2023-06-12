@@ -158,6 +158,10 @@ func (s *Syncer) receveResult() {
 					lastId := int64(0)
 					for _, result := range resultsInOrder {
 						s.logger.Infof("inscriptionId: %v", result)
+						if result.inscriptionId < 0 {
+							continue
+						}
+
 						if result.inscriptionId < lastId {
 							err = fmt.Errorf("results are not in order, lastId: %d, currentId: %d", lastId, result.inscriptionId)
 							break
