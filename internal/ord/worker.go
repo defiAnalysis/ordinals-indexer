@@ -64,11 +64,13 @@ func (w *Worker) processInscription(uid string) *result {
 func (w *Worker) parseInscriptionInfo(uid string) (map[string]interface{}, error) {
 	inscriptionURL, _ := url.JoinPath(w.baseURL, "inscription", uid)
 	w.logger.Debugf("[worker %d] fetching %s...", w.wid, inscriptionURL)
-	body, err := HttpGet(inscriptionURL)
+	resp, err := HttpGet(inscriptionURL)
 	if err != nil {
 		return nil, err
 	}
-	doc, err := goquery.NewDocumentFromReader(body)
+	defer resp.Body.Close()
+
+	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -130,16 +132,16 @@ func (w *Worker) parseInscriptionInfo(uid string) (map[string]interface{}, error
 func (w *Worker) parseContent(info map[string]interface{}) error {
 	contentURL, _ := url.JoinPath(w.baseURL, "content", info["id"].(string))
 	w.logger.Debugf("[worker %d] fetching %s...", w.wid, contentURL)
-	body, err := HttpGet(contentURL)
+	resp, err := HttpGet(contentURL)
 	if err != nil {
 		return err
 	}
 
-	//defer resp.Body.Close()
-	//body, err := ioutil.ReadAll(body)
-	//if err != nil {
-	//	return err
-	//}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
 
 	var found bool
 	for _, p := range parser.ParserList() {
@@ -162,15 +164,15 @@ func (w *Worker) parseContent(info map[string]interface{}) error {
 	return nil
 }
 
-func HttpGet(url string) ([]byte, error) {
+func HttpGet(url string) (*http.Response, error) {
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("cache-control", "no-cache")
 	res, e := http.DefaultClient.Do(req)
 	if res != nil {
-		defer res.Body.Close()
-		body, e := ioutil.ReadAll(res.Body)
-		return body, e
+		//defer res.Body.Close()
+		//body, e := ioutil.ReadAll(res.Body)
+		return res, e
 	}
 
 	return nil, e
