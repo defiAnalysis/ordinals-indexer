@@ -157,7 +157,7 @@ func (s *Syncer) receveResult() {
 					// make sure to process results in ascending order of inscriptionId
 					lastId := int64(0)
 					for _, result := range resultsInOrder {
-						s.logger.Infof("inscriptionId: %d", result.inscriptionId)
+						s.logger.Infof("inscriptionId: %v", result)
 						if result.inscriptionId < lastId {
 							err = fmt.Errorf("results are not in order, lastId: %d, currentId: %d", lastId, result.inscriptionId)
 							break
@@ -193,14 +193,16 @@ func (s *Syncer) processResults(resultsInOrder []*result, lastInscriptionId int6
 	var lastSuccessInscriptionId int64
 	for _, result := range resultsInOrder {
 		if result.inscriptionId < lastInscriptionId {
-			s.logger.Debugf("inscription %d is less than lastInscriptionId %d, ignore", result.inscriptionId, lastInscriptionId)
+			s.logger.Infof("inscription %d is less than lastInscriptionId %d, ignore", result.inscriptionId, lastInscriptionId)
 			continue
 		}
 		if result.err != nil {
+			s.logger.Errorf("failed to processResults: %v", result.err)
 			return count, result.err
 		}
 		err := s.processResult(result)
 		if err != nil {
+			s.logger.Errorf("failed to processResult: %v", result.err)
 			return count, err
 		}
 		s.logger.Infof("processed inscription %d", result.inscriptionId)
