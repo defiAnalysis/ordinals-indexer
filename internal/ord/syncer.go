@@ -423,8 +423,8 @@ func (s *Syncer) parseInscriptions(inscriptionURL string) (string, error) {
 
 	var insUids uids
 	links := doc.Find("div.thumbnails a")
-	links.Each(func(i int, s *goquery.Selection) {
-		href, _ := s.Attr("href")
+	links.Each(func(i int, ss *goquery.Selection) {
+		href, _ := ss.Attr("href")
 		uid := strings.Replace(href, "/inscription/", "", -1)
 		if uid == "" {
 			return
