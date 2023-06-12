@@ -148,7 +148,7 @@ func (s *Syncer) receveResult() {
 				resultCount = 0
 				resultsInOrder := make([]*result, len(insUids))
 				for i := 0; i < len(insUids); i++ {
-					s.logger.Debugf("insUids[%d]: %s", i, insUids[i])
+					s.logger.Infof("insUids[%d]: %s", i, insUids[i])
 					resultsInOrder[i] = results[insUids[len(insUids)-i-1]]
 				}
 				if len(resultsInOrder) != len(insUids) {
