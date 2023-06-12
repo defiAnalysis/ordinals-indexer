@@ -63,7 +63,7 @@ func (w *Worker) processInscription(uid string) *result {
 
 func (w *Worker) parseInscriptionInfo(uid string) (map[string]interface{}, error) {
 	inscriptionURL, _ := url.JoinPath(w.baseURL, "inscription", uid)
-	w.logger.Debugf("[worker %d] fetching %s...", w.wid, inscriptionURL)
+	w.logger.Infof("[worker %d] fetching %s...", w.wid, inscriptionURL)
 	resp, err := HttpGet(inscriptionURL)
 	if err != nil {
 		return nil, err
@@ -77,6 +77,7 @@ func (w *Worker) parseInscriptionInfo(uid string) (map[string]interface{}, error
 
 	details := make(map[string]interface{})
 	inscriptionIDText := doc.Find("h1").First().Text()
+	w.logger.Infof("inscriptionIDText %s", inscriptionIDText)
 	inscriptionIDText = strings.Replace(inscriptionIDText, "Inscription ", "", -1)
 	// convert inscriptionID string to int64
 	inscriptionID, err := strconv.ParseInt(inscriptionIDText, 10, 64)
